@@ -15,11 +15,16 @@ namespace UnitTests
 
         public void Deposit(int amount)
         {
-
+            Balance += amount;
         }
         public void Withdraw(int amount)
         {
-
+            if (Balance > 0)
+                Balance -= amount;
+            else
+            {
+                throw new Exception("Not enough funds!");
+            }
         }
     }
 }
