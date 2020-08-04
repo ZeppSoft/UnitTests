@@ -44,6 +44,15 @@ namespace UnitTests
                 Assert.That(ba.Balance, Is.LessThan(1));
             });
         }
+        [Test]
+        public void BankAccountShouldThrowOnNonPositiveAmount()
+        {
+           var ex = Assert.Throws<ArgumentException>(()=>
+            ba.Deposit(-1)
+            );
+
+           StringAssert.StartsWith("Deposit amounts should be positive",ex.Message);
+        }
 
     } 
 }
