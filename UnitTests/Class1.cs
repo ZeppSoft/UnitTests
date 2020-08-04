@@ -53,6 +53,30 @@ namespace UnitTests
 
            StringAssert.StartsWith("Deposit amounts should be positive",ex.Message);
         }
+    }
+    [TestFixture]
+    public class DataDrivenTest
+    {
+        private BankAccount ba;
+        [SetUp]
+        public void SetUp()
+        {
+            ba = new BankAccount(100);
+        }
+        [Test]
+        [TestCase(50,true,50)]
+        [TestCase(100,true,0)]
+        [TestCase(1000,false,100)]
+        public void TestMultipleWithdrawalScenarios(int amountToWithdraw, bool shouldSucceed, int expectedBalance)
+        {
+            var result = ba.Withdraw(amountToWithdraw);
+            //Warn.If(!result,"Failed for some reason");
 
-    } 
+            Assert.Multiple(() =>
+            {
+                Assert.That(result,Is.EqualTo(shouldSucceed));
+                Assert.That(ba.Balance,Is.EqualTo(expectedBalance));
+            });
+        }
+    }
 }

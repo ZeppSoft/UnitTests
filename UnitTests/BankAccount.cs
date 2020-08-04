@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using NUnit.Framework;
 
 namespace UnitTests
 {
@@ -20,14 +21,17 @@ namespace UnitTests
 
             Balance += amount;
         }
-        public void Withdraw(int amount)
+        public bool Withdraw(int amount)
         {
-            if (Balance > 0)
-                Balance -= amount;
-            else
+            if (Balance >= amount)
             {
-                throw new Exception("Not enough funds!");
+                Balance -= amount;
+                return true;
             }
+            else
+                return false;
         }
     }
+
+   
 }
