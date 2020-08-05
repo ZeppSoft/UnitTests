@@ -5,14 +5,14 @@ using System.Net.Sockets;
 namespace UnitTests
 {
     [TestFixture]
-    public class BankAccountTest
+    public class BankAccountUnitTests
     {
-        private BankAccount ba;
+        private BankAccount4UnitTests ba;
 
         [SetUp]
         public void Setup()
         {
-            ba = new BankAccount(100);
+            ba = new BankAccount4UnitTests(100);
         }
         [Test]
         public void BankAccountShouldIncreaseOnPositiveDeposit()
@@ -20,7 +20,7 @@ namespace UnitTests
             //AAA(arrange+act+assert) approach
 
             //arrange (init)
-            //var ba = new BankAccount(100);
+            //var ba = new BankAccount4UnitTests(100);
 
             //act
             ba.Deposit(100);
@@ -53,15 +53,55 @@ namespace UnitTests
 
            StringAssert.StartsWith("Deposit amounts should be positive",ex.Message);
         }
+
+       
+
+        //public void DepositIntegrationTest()
+        //{
+
+        //}
     }
+
+    [TestFixture]
+    public class BankAccountTests
+    {
+        private BankAccount ba;
+        [Test]
+        public void DepositIntegrationTest()
+        {
+            ba = new BankAccount(new ConsoleLog()){Balance =  100};
+            ba.Deposit(100);
+            Assert.That(ba.Balance,Is.EqualTo(200));
+        }
+        [Test]
+        public void DepositIntegratedTestWithFake()
+        {
+            var log = new NullLog();
+            ba = new BankAccount(log){Balance =  100};
+            ba.Deposit(100);
+            Assert.That(ba.Balance, Is.EqualTo(200));
+
+        }
+        [Test]
+        public void DepositIntegratedTestWithFakeNull()
+        {
+            var log = Null<ILog>.Instance;
+            ba = new BankAccount(log) { Balance = 100 };
+            ba.Deposit(100);
+            Assert.That(ba.Balance, Is.EqualTo(200));
+
+        }
+    }
+
+
     [TestFixture]
     public class DataDrivenTest
     {
-        private BankAccount ba;
+        private BankAccount4UnitTests ba;
         [SetUp]
         public void SetUp()
         {
-            ba = new BankAccount(100);
+            ba = new BankAccount4UnitTests(100);
         }
         [Test]
         [TestCase(50,true,50)]
